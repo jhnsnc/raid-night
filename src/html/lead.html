@@ -1,0 +1,213 @@
+<html>
+<head>
+    <title>Raid Script</title>
+    <!-- scripts -->
+    <script type="text/javascript" src="../js/lib/platform.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../js/global.js"></script>
+    <script type="text/javascript" src="../js/lead.js"></script>
+    <!-- polymer components -->
+    <link rel="import" href="../components/core-style/core-style.html">
+    <link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/paper-button/paper-button.html">
+    <link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../components/paper-item/paper-item.html">
+    <link rel="import" href="../components/paper-menu-button/paper-menu-button.html">
+    <link rel="import" href="../components/paper-input/paper-input.html">
+    <link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
+    <!-- project components -->
+    <link rel="import" href="raid-night-icons.html">
+    <!-- styles -->
+    <link rel="stylesheet" href="../css/general.css" shim-shadowdom />
+    <link rel="stylesheet" href="../css/fonts.css" no-shim />
+    <link rel="stylesheet" href="../css/lead.css" shim-shadowdom />
+</head>
+<body unresolved>
+    <div class="windowWrapper">
+        <div class="toolbar">
+            <div class="toolbarControls">
+                <paper-menu-button class="button btnModifySteps" icon="edit" label="Modify Steps" halign="right" valign="top">
+                    <paper-item class="option btnEditStep" icon="edit" onclick="editCurrentStep()">Edit Current Step</paper-item>
+                    <paper-item class="option btnAddStepBefore" icon="insert-before" onclick="addNewStepBefore()">Add Step Before</paper-item>
+                    <paper-item class="option btnAddStepAfter" icon="insert-after" onclick="addNewStepAfter()">Add Step After</paper-item>
+                    <paper-item class="option btnDeleteStep" icon="delete" onclick="handleDeleteCurrentStep()">Delete Current Step</paper-item>
+                </paper-menu-button>
+                <paper-menu-button class="button btnScriptSettings" icon="settings" label="Script Settings" halign="right" valign="top">
+                    <paper-item class="option btnSave" icon="save" onclick="handleSaveScript()">Save Script</paper-item>
+                    <paper-item class="option btnOpen" icon="open" onclick="handleOpenScript()">Open Script</paper-item>
+                    <paper-item class="option btnClearScript" icon="clear" onclick="handleClearScript()">New Script</paper-item>
+                    <paper-item class="option btnResetScript" icon="info" onclick="handleResetScript()">Info Script</paper-item>
+                </paper-menu-button>
+                <paper-icon-button class="button btnCloseWindow" icon="close" label="Close"></paper-icon-button>
+            </div>
+            <h1 class="windowDragGrip">Raid Script</h1>
+        </div>
+        <div class="stepStatusBar">
+            <paper-icon-button class="button btnPrevStep" icon="arrow-left" label="Previous Step"></paper-icon-button>
+            <template id="stepTitleInfoTemplate" is="auto-binding" bind>
+                <h2><span class="title">{{title}}</span> <span class="stepNumberIndicator">(<span class="currentStep">{{currentStep}}</span>/<span class="numSteps">{{numSteps}}</span>)</span></h2>
+            </template>
+            <paper-icon-button class="button btnNextStep" icon="arrow-right" label="Next Step"></paper-icon-button>
+        </div>
+        <div class="contentArea">
+            <div class="stepMetaInfoInputs">
+                <paper-input class="txtStepTitle" floatingLabel label="Step Title"></paper-input>
+            </div>
+            <ul class="stepChunksList">
+                <template id="chunkEmptyNoticeTemplate" bind if="{{ contentChunks.length < 1 }}" is="auto-binding">
+                    <li class="emptyNotice">
+                        <h3>Step has no content!</h3>
+                        <p>Click the <core-icon icon="edit"></core-icon> icon above and choose "Edit Current Step" in order to add content to this raid script step.</p>
+                    </li>
+                </template>
+                <template id="chunkContentTemplate" repeat="{{contentChunks}}" is="auto-binding">
+                    <template if="{{ type == 'text' }}">
+                        <li class="chunk textChunk">
+                            <div class="chunkActions">
+                                <paper-icon-button class="button btnPostToTeamspeak" icon="teamspeak" label="Post to TeamSpeak"></paper-icon-button>
+                                <paper-icon-button class="button btnCopyContent" icon="clipboard" label="Copy to Clipboard"></paper-icon-button>
+                                    <!-- <script>if (setupClipboardButtons) { setupClipboardButtons(); }</script> TODO: remove if not needed -->
+                            </div>
+                            <div class="chunkEditActions">
+                                <paper-icon-button class="button btnEditChunk" icon="edit" label="Edit Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnDeleteChunk" icon="delete" label="Delete Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnRearrangeChunk" icon="rearrange-vertical" label="Rearrange"></paper-icon-button>
+                            </div>
+                            <div class="chunkContent">
+                                <p>{{content}}</p>
+                            </div>
+                        </li>
+                    </template>
+                    <template if="{{ type == 'link' }}">
+                        <li class="chunk linkChunk">
+                            <div class="chunkActions">
+                                <paper-icon-button class="button btnPostToTeamspeak" icon="teamspeak" label="Post to TeamSpeak"></paper-icon-button>
+                                <paper-icon-button class="button btnCopyContent" icon="clipboard" label="Copy to Clipboard"></paper-icon-button>
+                                    <!-- <script>if (setupClipboardButtons) { setupClipboardButtons(); }</script> TODO: remove if not needed -->
+                            </div>
+                            <div class="chunkEditActions">
+                                <paper-icon-button class="button btnEditChunk" icon="edit" label="Edit Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnDeleteChunk" icon="delete" label="Delete Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnRearrangeChunk" icon="rearrange-vertical" label="Rearrange"></paper-icon-button>
+                            </div>
+                            <div class="chunkContent">
+                                <h4>{{content.label}}</h4>
+                                <p><a href="{{content.location}}" target="_blank">{{content.location}}</a></p>
+                            </div>
+                        </li>
+                    </template>
+                    <template if="{{ type == 'list' }}">
+                        <li class="chunk listChunk">
+                            <div class="chunkActions">
+                                <paper-icon-button class="button btnPostToTeamspeak" icon="teamspeak" label="Post to TeamSpeak"></paper-icon-button>
+                                <paper-icon-button class="button btnCopyContent" icon="clipboard" label="Copy to Clipboard"></paper-icon-button>
+                                    <!-- <script>if (setupClipboardButtons) { setupClipboardButtons(); }</script> TODO: remove if not needed -->
+                            </div>
+                            <div class="chunkEditActions">
+                                <paper-icon-button class="button btnEditChunk" icon="edit" label="Edit Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnDeleteChunk" icon="delete" label="Delete Chunk"></paper-icon-button>
+                                <paper-icon-button class="button btnRearrangeChunk" icon="rearrange-vertical" label="Rearrange"></paper-icon-button>
+                            </div>
+                            <div class="chunkContent">
+                                <template id="orderedListChunkTemplate" if="{{ordered}}">
+                                    <ol>
+                                        <template id="orderedListChunkItemTemplate" repeat="{{contentItem in content}}">
+                                            <li>{{contentItem}}</li>
+                                        </template>
+                                    </ol>
+                                </template>
+                                <template id="unorderedListChunkTemplate" if="{{!ordered}}">
+                                    <ul>
+                                        <template id="unorderedListChunkItemTemplate" repeat="{{contentItem in content}}">
+                                            <li>{{contentItem}}</li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </div>
+                        </li>
+                    </template>
+                </template>
+            </ul>
+            <div class="stepEditButtons">
+                <div class="addButtons">
+                    <paper-button class="btnAddText" label="Add Text" icon="text"></paper-button>
+                    <paper-button class="btnAddLink" label="Add Link" icon="link"></paper-button>
+                    <paper-button class="btnAddList" label="Add List" icon="list"></paper-button>
+                    <paper-button class="btnAddTeamSplit" label="Add Team Split" icon="split"></paper-button>
+                </div>
+                <paper-button class="btnDoneEditing" raisedButton label="Done" icon="check"></paper-button>
+            </div>
+        </div>
+        <div class="blackout"></div>
+        <div class="dialog copyDialog">
+            <h2>Copy Content</h2>
+            <p class="instructions">Press <strong>Ctrl+C</strong> to copy the content and then paste it in game chat (or elsewhere) with <strong>Ctrl+V</strong>.</p>
+            <p class="content" contenteditable="true">
+                <!-- content goes here -->
+            </p>
+            <paper-button class="btnResetContent" label="Reset Content" icon="undo"></paper-button>
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="dialog fileDialog">
+            <h2>Save/Open Script</h2>
+            <paper-input class="txtFileName" floatingLabel label="Save As/Open"></paper-input>
+            <ul class="fileList">
+                <!-- 
+                <li>
+                    <paper-icon-button class="btnDeleteFileItem" icon="delete"></paper-icon-button>
+                    <paper-item class="scriptName" icon="open/save">Script Name</paper-item>
+                </li>
+                 -->
+            </ul>
+            <paper-button class="btnCancel" label="Cancel"></paper-button>
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="dialog editTextChunk">
+            <h2>Edit Text</h2>
+            <paper-input class="txtTextContent" floatingLabel multiline maxRows="8" label="Text Content"></paper-input>
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="dialog editLinkChunk">
+            <h2>Edit Link</h2>
+            <paper-input class="txtLinkTitle" floatingLabel label="Link Title"></paper-input>
+            <paper-input class="txtLinkLocation" floatingLabel label="Link Location"></paper-input>
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="dialog editListChunk">
+            <h2>Edit List</h2>
+            <!-- <paper-checkbox class="checkboxOrdered" label="Numbered list"></paper-checkbox> -->
+            <ol class="listContainer orderedItemList">
+                <!--
+                <li>
+                    <span class="listItemContent"></span>
+                    <paper-icon-button class="btnDeleteListItem" icon="delete"></paper-icon-button>
+                </li>
+                -->
+            </ol>
+            <ul class="listContainer unorderedItemList">
+                <!--
+                <li>
+                    <span class="listItemContent"></span>
+                    <paper-icon-button class="btnDeleteListItem" icon="delete"></paper-icon-button>
+                </li>
+                -->
+            </ul>
+            <paper-button class="btnAddListItem" label="Add item" icon="add"></paper-button>
+            <paper-input class="txtListItemContent" multiline label="List Item Content"></paper-input>
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="dialog editTeamSplitChunk">
+            <h2>Edit Team Split</h2>
+            <!-- TODO -->
+            <paper-button class="doneButton btnDone" raisedButton label="Done" icon="check"></paper-button>
+        </div>
+        <div class="confirmBlackout"></div>
+        <div class="dialog confirmDialog">
+            <h2 class="title">Confirm Delete</h2>
+            <p class="message">Are you sure you want to delete this item?</p>
+            <paper-button class="btnCancel" label="Cancel"></paper-button>
+            <paper-button class="btnConfirm" raisedButton label="Delete"></paper-button>
+        </div>
+    </div>
+</body>
+</html>

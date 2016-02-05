@@ -1,0 +1,271 @@
+@import "mixins.scss";
+
+html {
+	&.rearranging * {
+		cursor: -webkit-grabbing !important;
+	}
+}
+
+.toolbar {
+	background: $blue500;
+	background: -webkit-linear-gradient(top, $blue500 0%, $blue600 60%);
+}
+
+.contentArea {
+	max-height: 550px;
+	padding: 0;
+	text-align: center;
+	@include verticalScrollbar;
+}
+
+ul.memberList {
+	li {
+		position: relative;
+		display: none;
+		width: 100%;
+		overflow: hidden;
+		background: #F9F9F9;
+		-webkit-transition: -webkit-transform 200ms, box-shadow 200ms;
+		&.active {
+			display: block;
+		}
+		.memberActions {
+			position: absolute;
+			right: 0;
+			top: 40%;
+			margin: -17px 10px 0 0;
+
+			.button {
+				cursor: pointer;
+				float: left;
+				width: 40px;
+				min-height: 40px;
+				margin-left: 4px;
+				color: rgba(#000, 0.6);
+				font: 0/0 a;
+				transition: color 150ms;
+				core-icon svg {
+					-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+					-webkit-transform-origin: 50% 50%;
+				}
+				&:hover {
+					color: $accentAmber700;
+					core-icon svg {
+						-webkit-transform: scale(1.2);
+					}
+				}
+				&.btnRearrangeMember {
+					cursor: -webkit-grab;
+				}
+			}
+		}
+		.memberCard {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			&.hasTeamspeak {
+				padding-right: 30px;
+				.teamspeakIcon {
+					position: absolute;
+					right: 8px;
+					top: 6px;
+					width: 18px;
+					height: 18px;
+					color: rgba(#FFF, 0.97);
+					-webkit-filter: drop-shadow(1px 1px 2px rgba(#000, 0.5));
+				}
+			}
+		}
+		&.dragPlaceholder {
+			background: rgba(#000, 0.2);
+		}
+		&.dragActive {
+			z-index: 10;
+			position: absolute;
+		}
+		&.dragSelected {
+			-webkit-transform: scale(1.05);
+			box-shadow: 0 8px 17px 0 rgba(#000, 0.3);
+		}
+	}
+}
+
+.teamspeakStatus {
+	padding: 10px 0 20px;
+	h3 {
+		margin: 0;
+		font-size: 1.4rem;
+		font-weight: 600;
+		line-height: 40px;
+		text-align: left;
+		.statusText {
+			color: $blueGrey200;
+			font-weight: 400;
+		}
+	}
+	&.disconnected {
+		.btnRefreshConnection, .statusText {
+			color: $blueGrey200;
+		}
+	}
+	&.refreshing {
+		.btnRefreshConnection, .statusText {
+			color: $amber500;
+		}
+	}
+	&.initializing, &.connecting, &.configuring {
+		.btnRefreshConnection, .statusText { 
+			color: $orange500;
+		}
+	}
+	&.connected {
+		.btnRefreshConnection, .statusText {
+			color: $green300;
+		}
+	}
+	&.failed {
+		.btnRefreshConnection, .statusText {
+			color: $red500;
+		}
+	}
+	.btnRefreshConnection {
+		cursor: pointer;
+		float: left;
+		width: 40px;
+		min-height: 40px;
+		margin-left: 40px;
+		margin-right: 10px;
+		color: $blueGrey200;
+		font: 0/0 a;
+		transition: color 150ms;
+		core-icon svg {
+			-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			-webkit-transform-origin: 50% 50%;
+		}
+		&:hover {
+			color: $accentAmber700;
+			core-icon svg {
+				-webkit-transform: scale(1.2);
+			}
+		}
+	}
+}
+
+.editMemberDialog {
+	h2 {
+		margin: 10px 0 5px;
+	}
+	h3 {
+		margin: 20px 0 2px;
+		font-size: 1.8rem;
+		font-weight: 500;
+	}
+	.button {
+		&.btnDone {
+			float: right;
+		}
+	}
+	paper-input {
+		margin: 0 0 2px 10px;
+	}
+	paper-input::shadow #errorContainer {
+		display: none;
+	}
+	.tsName {
+		display: none;
+		margin: 10px 0 10px 10px;
+		color: #888;
+		&.active {
+			display: block;
+		}
+	}
+	.pickerBlackout {
+		z-index: 9;
+		position: absolute;
+		left: 0;
+		top: 0;
+		display: none;
+		width: 100%;
+		height: 100%;
+		background: rgba(#000000, 0.3);
+		opacity: 0.0;
+		-webkit-transition: all 400ms;
+		&.active {
+			display: block;
+			opacity: 1.0;
+		}
+	}
+	.picker {
+		z-index: 10;
+		position: fixed;
+		left: 14%;
+		display: none;
+		width: 72%;
+		margin-top: -40px;
+		@include afterClearfix;
+		background: #F9F9F9;
+		box-shadow: 0 8px 17px 0 rgba(#000, 0.55);
+	}
+	.iconPicker {
+		padding: 5px 10px;
+		color: rgba(#000, 0.7);
+		.iconOption {
+			float: left;
+			width: 56px;
+			height: 56px;
+			font: 0/0 a;
+			&::shadow #clip {
+				height: 100%;
+				#content {
+					height: 100%;
+					#icon {
+						width: 40px; //56px - (8*2)
+						height: 40px; //56px - (8*2)
+						svg {
+							width: 40px; //56px - (8*2)
+							height: 40px; //56px - (8*2)
+						}
+					}
+				}
+			}
+		}
+	}
+	paper-button.iconPickerButton {
+		display: inline-block;
+		margin-top: 5px;
+		color: #575757;
+		text-transform: none;
+	}
+	.colorPicker {
+		.colorOption {
+			float: left;
+			width: 50%;
+			&.red { color: $red500; }
+			&.pink { color: $pink500; }
+			&.purple { color: $purple400; }
+			&.blue { color: $blue600; }
+			&.cyan { color: $cyan600; }
+			&.green { color: $green300; }
+			&.lightGreen { color: $lightGreen500; }
+			&.yellow { color: $yellow600; }
+			&.orange { color: $orange500; }
+			&.deepOrange { color: $deepOrange500; }
+			&.brown { color: $brown500; }
+			&.blueGrey { color: $blueGrey200; }
+		}
+	}
+	paper-button.colorPickerButton {
+		text-transform: none;
+		&.red { color: $red500; }
+		&.pink { color: $pink500; }
+		&.purple { color: $purple400; }
+		&.blue { color: $blue600; }
+		&.cyan { color: $cyan600; }
+		&.green { color: $green300; }
+		&.lightGreen { color: $lightGreen500; }
+		&.yellow { color: $yellow600; }
+		&.orange { color: $orange500; }
+		&.deepOrange { color: $deepOrange500; }
+		&.brown { color: $brown500; }
+		&.blueGrey { color: $blueGrey200; }
+	}
+}

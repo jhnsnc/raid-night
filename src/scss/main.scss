@@ -1,0 +1,68 @@
+@import "mixins.scss";
+
+body {
+	margin: 0;
+}
+
+html {
+	color: #FFFFFF;
+	background: rgba(#000000, 0.0);
+}
+
+embed.plugin {
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	z-index: -999;
+}
+
+.controlArea {
+	.controlBar {
+		@include afterClearfix;
+		.button {
+			margin: 0 1px;
+			background: rgba(#FFF, 0.2);
+			box-shadow: inset 0 0 7px 5px rgba(#FFF, 0.1), 0 1px 6px 1px rgba(#FFF, 0.15);
+		}
+		.windowDragGrip {
+			float: left;
+			.rightEdge & {
+				float: right;
+			}
+		}
+		.controlButtonSet {
+			float: left;
+			margin: 0 4px 0 0;
+			.controlButton {
+				float: left;
+			}
+			.rightEdge & {
+				float: right;
+				margin: 0 0 0 4px;
+			}
+		}
+		.closeButton {
+			float: right;
+			margin: 0 42px 0 0;
+			.rightEdge & {
+				float: left;
+				margin: 0 0 0 42px;
+			}
+		}
+	}
+}
+
+ul.memberList li {
+	display: none;
+	height: 0;
+	margin-right: 42px;
+	margin-left: 42px;
+	opacity: 0.0;
+	-webkit-transition: all 150ms;
+	&.active {
+		display: block;
+	}
+	.memberCard {
+		margin: 0;
+	}
+}

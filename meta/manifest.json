@@ -1,0 +1,58 @@
+{
+    "manifest_version": 1,
+    "type": "WebApp",
+    "meta": {
+        "name": "RaidNight",
+        "version": "1.0.0",
+        "minimum-overwolf-version": "0.77.1.0",
+        "author": "Chris Johnson",
+        "icon": "IconMouseOver.png",
+        "icon_gray": "IconMouseNormal.png",
+        "description": "RaidNight App for Overwolf"
+    },
+    "data": {
+        "start_window": "main",
+        "windows": {
+            "main": {
+                "file": "html/main.html",
+                "transparent": true,
+                "resizable": false,
+                "size": { "width":318, "height":400 },
+                "min_size": { "width":318, "height":200 },
+                "max_size": { "width":400, "height":700 }
+            },
+            "group": {
+                "file": "html/group.html",
+                "transparent": true,
+                "resizable": false,
+                "size": { "width":420, "height":620 },
+                "min_size": { "width":420, "height":620 },
+                "max_size": { "width":420, "height":700 }
+            },
+            "lead": {
+                "file": "html/lead.html",
+                "transparent": true,
+                "resizable": false,
+                "size": { "width":420, "height":620 },
+                "min_size": { "width":420, "height":620 },
+                "max_size": { "width":420, "height":700 }
+            },
+            "settings": {
+                "file": "html/settings.html",
+                "transparent": true,
+                "resizable": false,
+                "size": { "width":350, "height":800 },
+                "min_size": { "width":350, "height":300 },
+                "max_size": { "width":350, "height":800 }
+            },
+            "teamspeak": {
+                "file": "html/teamspeak.html",
+                "transparent": true,
+                "resizable": false,
+                "clickthrough": true,
+                "show_in_taskbar": false,
+                "size": { "width":100, "height":100 }
+            }
+        }
+    }
+}

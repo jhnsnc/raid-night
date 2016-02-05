@@ -1,0 +1,525 @@
+@import "mixins.scss";
+
+.toolbar {
+	background: $pink500;
+	background: -webkit-linear-gradient(top, $pink500 0%, $pink600 60%);
+	.editing & {
+		.btnModifySteps {
+			&::shadow #menu {
+				.btnAddStepBefore, .btnAddStepAfter, .btnDeleteStep {
+					pointer-events: none;
+					color: rgba(#000, 0.2);
+				}
+			}
+		}
+		.btnScriptSettings {
+			&::shadow #menu {
+				.btnSave, .btnOpen, .btnResetScript, .btnClearScript {
+					pointer-events: none;
+					color: rgba(#000, 0.2);
+				}
+			}
+		}
+	}
+}
+
+.stepStatusBar {
+	z-index: 1;
+	position: relative;
+	box-shadow: 0 2px 6px 0 rgba(#000, 0.25);
+	margin: 0;
+	background: $blueGrey100;
+	h2 {
+		color: #333;
+		padding: 10px 40px;
+		margin: 0;
+		text-align: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		-webkit-transition: all 400ms;
+		&.offscreenLeft {
+			-webkit-transform: translateX(-100px);
+		}
+		&.offscreenRight {
+			-webkit-transform: translateX(100px);
+		}
+		&.faded {
+			opacity: 0.0;
+			-webkit-transition: all 250ms;
+		}
+		.title {
+			display: inline-block;
+			max-width: 250px;
+			margin-bottom: -4px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.stepNumberIndicator {
+			display: inline-block;
+			font-size: 1.4rem;
+			font-weight: 500;
+		}
+	}
+	.btnPrevStep, .btnNextStep {
+		position: absolute;
+		top: 2px;
+		font: 0/0 a;
+		color: #333;
+		-webkit-transition: color 300ms;
+		core-icon svg {
+			-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			-webkit-transform-origin: 50% 50%;
+		}
+		&:hover {
+			core-icon svg {
+				-webkit-transform: scale(1.2);
+			}
+		}
+		&.disabled {
+			pointer-events: none;
+			cursor: default;
+			color: $blueGrey200;
+			&:hover {
+				core-icon svg {
+					-webkit-transform: none;
+				}
+			}
+		}
+	}
+	.btnPrevStep {
+		left: 5px;
+	}
+	.btnNextStep {
+		right: 5px;
+	}
+}
+
+.contentArea {
+	max-height: 500px;
+	padding: 25px 0 15px;
+	@include verticalScrollbar;
+	.button {
+		cursor: pointer;
+		font: 0/0 a;
+		transition: color 150ms;
+		core-icon svg {
+			-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			-webkit-transform-origin: 50% 50%;
+		}
+		&:hover {
+			core-icon svg {
+				-webkit-transform: scale(1.2);
+			}
+		}
+	}
+}
+
+.stepMetaInfoInputs {
+	pointer-events: none;
+	height: 0;
+	padding: 0 15px 0;
+	margin: 0;
+	overflow: hidden;
+	-webkit-transition: all 300ms 0ms;
+	box-shadow: inset 0 -40px 50px -50px rgba(0,0,0,0.2);
+	.editing & {
+		pointer-events: all;
+		height: 80px;
+		padding-bottom: 10px;
+		margin-bottom: 25px;
+		-webkit-transition: all 300ms 300ms;
+	}
+}
+
+.stepEditButtons {
+	pointer-events: none;
+	height: 0;
+	padding: 0 15px 0;
+	margin: 0;
+	overflow: hidden;
+	-webkit-transition: height 300ms 0ms;
+	box-shadow: inset 0 60px 50px -50px rgba(0,0,0,0.2);
+	@include afterClearfix;
+	.editing & {
+		pointer-events: all;
+		height: 180px;
+		padding-top: 20px;
+		padding-bottom: 18px;
+		margin-top: 25px;
+		margin-bottom: -10px;
+		-webkit-transition: height 300ms 300ms;
+	}
+	.addButtons {
+		@include afterClearfix;
+		paper-button {
+			margin: 3px 0;
+			transition: color 150ms;
+			&:nth-child(odd) {
+				clear: both;
+				float: left;
+			}
+			&:nth-child(even) {
+				float: right;
+			}
+			core-icon svg {
+				-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+				-webkit-transform-origin: 50% 50%;
+			}
+			&:hover {
+				color: $accentAmber700;
+				core-icon svg {
+					-webkit-transform: scale(1.2);
+				}
+			}
+			&.btnAddTeamSplit {
+				display: none; //TODO: remove this style when feature is complete
+			}
+		}
+	}
+	.btnDoneEditing {
+		clear: both;
+		float: right;
+		margin: 7px 0 3px;
+	}
+}
+
+ul.stepChunksList {
+	$sideButtonAreaWidth: 110px;
+	padding: 0;
+	margin: 0;
+	-webkit-transition: all 400ms;
+	&.offscreenLeft {
+		-webkit-transform: translateX(-100px);
+	}
+	&.offscreenRight {
+		-webkit-transform: translateX(100px);
+	}
+	&.faded {
+		opacity: 0.0;
+		-webkit-transition: all 250ms;
+	}
+	li.chunk {
+		list-style: none;
+		margin: 0 0 15px;
+		@include afterClearfix;
+
+		.chunkContent {
+			max-width: 380px;
+			padding: 5px (15px - 10) 5px $sideButtonAreaWidth;
+			-webkit-transition: all 300ms 300ms;
+			p {
+				margin: 0;
+			}
+			h4 {
+				margin: 0;
+			}
+		}
+		.chunkActions, .chunkEditActions {
+			overflow: hidden;
+			-webkit-transition: all 300ms 300ms;
+			.button {
+				color: rgba(#000, 0.6);
+				&::shadow {
+					#clip {
+						height: 100%;
+					}
+					#content {
+						height: 100%;
+					}
+				}
+				&:hover {
+					color: $accentAmber700;
+				}
+			}
+		}
+		.chunkActions {
+			float: left;
+			width: $sideButtonAreaWidth;
+			height: 40px;
+			padding-right: 10px;
+			.button {
+				float: right;
+				width: 40px;
+				height: 40px;
+				margin-right: 4px;
+				&::shadow {
+					#icon {
+						width: 22px;
+						height: 22px;
+						margin: 9px;
+					}
+				}
+			}
+		}
+		.chunkEditActions {
+			float: right;
+			width: 0;
+			height: 30px;
+			padding-left: 0;
+			.button {
+				float: left;
+				width: 30px;
+				height: 30px;
+				margin-left: 2px;
+				&::shadow {
+					#icon {
+						width: 20px;
+						height: 20px;
+						margin: 5px;
+					}
+				}
+			}
+			// TODO: remove temporary hiding of rearrange button
+			.button.btnRearrangeChunk {
+				display: none;
+			}
+			.button {
+				margin-left: 12px;
+			}
+			// END TODO
+		}
+		&.textChunk {
+			padding-top: 1px;
+			p {
+				line-height: 1.6;
+			}
+		}
+		&.linkChunk {
+			.chunkContent {
+				padding-top: 2px;
+				h4 {
+					font-size: 1.8rem;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+				p {
+					font-size: 1.2rem;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					a {
+						color: $pink600;
+						-webkit-transition: color 200ms;
+						&:hover, &:focus {
+							color: $accentAmber400;
+						}
+					}
+				}
+			}
+		}
+		&.listChunk {
+			.chunkContent {
+				ul, ol {
+					padding: 0 0 0 20px;
+					li {
+						margin: 0 0 4px;
+						font-size: 1.4rem;
+						line-height: 1.2;
+					}
+				}
+				ul li {
+					list-style-type: disc;
+				}
+				ol li {
+					list-style-type: decimal;
+				}
+			}
+		}
+	}
+	.editing & {
+		li.chunk {
+			.chunkContent {
+				padding-right: ($sideButtonAreaWidth - 10);
+				padding-left: 15px;
+				-webkit-transition: all 300ms 0ms;
+			}
+			.chunkActions, .chunkEditActions {
+				-webkit-transition: all 300ms 0ms;
+			}
+			.chunkActions {
+				width: 0;
+				padding-right: 0;
+			}
+			.chunkEditActions {
+				width: $sideButtonAreaWidth;
+				padding-left: 10px;
+			}
+		}
+	}
+	li.emptyNotice {
+		list-style: none;
+		padding: 5px 30px;
+		margin: 0;
+		h3 {
+			color: $red600;
+			font-size: 1.8rem;
+			font-weight: 400;
+		}
+		p {
+			color: #454545;
+			font-size: 1.4rem;
+			line-height: 1.5;
+			core-icon {
+				width: 18px;
+				height: 18px;
+			}
+		}
+	}
+}
+
+.dialog {
+	&.copyDialog {
+		.content {
+			max-height: 150px;
+			padding: 10px;
+			-webkit-user-select: text;
+			font-size: 1.2rem;
+			background: #CCC;
+			box-shadow: inset 0 1px 7px rgba(#000, 0.4);
+			border-radius: 4px;
+			@include verticalScrollbar;
+			&::selection {
+				background: $accentAmber700;
+				color: #FFF;
+			}
+		}
+		.btnResetContent {
+			float: left;
+		}
+	}
+	&.fileDialog {
+		ul.fileList {
+			max-height: 290px;
+			padding: 5px 0 5px;
+			margin: 0 0 30px;
+			@include verticalScrollbar;
+			li {
+				list-style: none;
+				color: #333;
+				overflow: hidden;
+				.btnDeleteFileItem {
+					float: right;
+				}
+				.scriptName {
+					width: 250px;
+					height: 40px;
+					font-size: 1.6rem;
+					font-weight: 400;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+			}
+		}
+	}
+	&.editListChunk {
+		.checkboxOrdered {
+			margin: 10px 0 10px 2px;
+			&::shadow {
+				#ink[checked] {
+					color: $accentAmber700;
+				}
+				#checkbox.checked {
+					border-color: $accentAmber700;	
+				}
+			}
+		}
+		ul li {
+			list-style-type: disc;
+		}
+		ol li {
+			list-style-type: decimal;
+		}
+		ul, ol {
+			max-height: 330px;
+			padding: 0 0 0 30px;
+			margin: 0;
+			@include verticalScrollbar;
+			&.selected {
+				padding: 15px 0 15px 30px;
+			}
+		}
+		li {
+			position: relative;
+			padding: 8px 0 8px;
+			font-size: 1.4rem;
+			line-height: 1.6rem;
+			@include afterClearfix;
+			.listItemContent {
+				display: inline-block;
+				width: 230px;
+				min-height: 20px;
+				margin-top: -1.6rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.btnDeleteListItem {
+				position: absolute;
+				right: 5px;
+				top: 50%;
+				width: 36px;
+				height: 36px;
+				margin: -20px 0 0;
+				color: rgba(#000, 0.6);
+				-webkit-transition: color 300ms;
+				core-icon svg {
+					-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+					-webkit-transform-origin: 50% 50%;
+				}
+				&::shadow #clip {
+					height: 100%;
+					#content {
+						height: 100%;
+						core-icon {
+							width: 20px;
+							height: 20px;
+							margin: 8px;
+						}
+					}
+				}
+				&:hover {
+					core-icon svg {
+						-webkit-transform: scale(1.2);
+					}
+					color: $accentAmber700;
+				}
+			}
+			&.editing {
+				.listItemContent {
+					display: none;
+				}
+				.txtListItemContent {
+					display: block;
+				}
+			}
+		}
+		.btnAddListItem {
+			float: left;
+		}
+		.txtListItemContent {
+			display: none;
+			width: 230px;
+			margin: -23px 0 -3px;
+			&::shadow {
+				#floatedLabel, #errorContainer {
+					display: none;
+				}
+			}
+		}
+	}
+	&.confirmDialog {
+		top: 20%;
+		width: 300px;
+		margin-left: -150px;
+		@include afterClearfix;
+		.btnCancel {
+			float: left;
+		}
+		.btnConfirm {
+			float: right;
+		}
+	}
+}

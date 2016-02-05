@@ -1,0 +1,50 @@
+<html>
+<head>
+	<title>RaidNight</title>
+	<!-- scripts -->
+    <script type="text/javascript" src="../js/lib/platform.js" debug log="bind,ready"></script>
+	<script type="text/javascript" src="../js/lib/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../js/global.js"></script>
+	<script type="text/javascript" src="../js/main.js"></script>
+    <!-- polymer components -->
+    <link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/core-style/core-style.html">
+    <link rel="import" href="../components/paper-button/paper-button.html">
+    <link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+    <!-- project components -->
+    <link rel="import" href="raid-night-icons.html">
+	<!-- styles -->
+    <link rel="stylesheet" href="../css/general.css" shim-shadowdom />
+    <link rel="stylesheet" href="../css/fonts.css" no-shim />
+	<link rel="stylesheet" href="../css/main.css" shim-shadowdom />
+</head>
+<body resolved>
+	<div class="controlArea">
+		<div class="controlBar buttons-3">
+			<paper-icon-button class="windowDragGrip button" icon="drag-grip" fill></paper-icon-button>
+			<div class="controlButtonSet">
+				<paper-icon-button id="btnGroup" class="controlButton button btnGroup" icon="group" fill></paper-icon-button>
+				<paper-icon-button id="btnLead" class="controlButton button btnLead" icon="script" fill></paper-icon-button>
+				<paper-icon-button id="btnSettings" class="controlButton button btnSettings" icon="settings" fill></paper-icon-button>
+				<!-- <paper-icon-button id="btnTools" class="controlButton button btnTools" icon="tools" fill></paper-icon-button> -->
+			</div>
+			<paper-icon-button id="btnClose" class="closeButton button" icon="close" fill></paper-icon-button>
+		</div>
+	</div>
+	<div class="contentArea">
+        <ul class="memberList">
+            <template id="memberListTemplate" is="auto-binding" repeat="{{ members }}">
+            	<li class="{{ {active: isActive} | tokenList }}">
+                	<div id="member-{{id}}" class="memberCard {{colorClass}} {{ {hasTeamspeak: tsId, largeIcon: role} | tokenList }}">
+                	    <core-icon class="memberIcon" icon="player-icon-{{icon}}"></core-icon>
+                	    <h4 class="memberName">{{name}}</h4>
+                        <template if="{{ role }}">
+                            <p class="memberRole">{{role}}</p>
+                        </template>
+                	</div>
+                </li>
+            </template>
+        </ul>
+	</div>
+</body>
+</html>

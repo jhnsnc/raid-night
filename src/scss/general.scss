@@ -1,0 +1,348 @@
+@import "mixins.scss";
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+	color: #000;
+	background: transparent;
+	-webkit-user-select: none;
+}
+
+body {
+	padding: 10px;
+	margin: 0;
+	font-family: $roboto;
+	font-size: 1.4rem;
+	overflow: none;
+}
+
+#tsPlugin {
+	visibility: hidden;
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	z-index: -999;
+}
+
+.windowWrapper {
+	position: relative;
+	margin: 0;
+	background: #F9F9F9;
+	box-shadow: 0 2px 5px rgba(#000, 0.54);
+}
+
+section {
+	padding: 10px 20px 15px;
+}
+
+h1, h2, h3 {
+	margin: 0 0 10px;
+	color: rgba(#000, 0.75);
+	font-family: $roboto;
+	font-weight: 400;
+	line-height: 1.2;
+	letter-spacing: 1px;
+}
+h1 {
+	font-size: 2.4rem;
+}
+h2 {
+	font-size: 2.0rem;
+}
+h3 {
+	font-size: 1.6rem;
+}
+
+.noTransition {
+	-webkit-transition: none !important;
+}
+
+.windowDragGrip {
+	cursor: move;
+}
+
+paper-input {
+	&::shadow {
+		#input {
+			@include verticalScrollbar;
+		}
+	}
+}
+
+paper-radio-button {
+	padding: 5px 10px;
+	margin-left: -10px;
+}
+
+paper-radio-button::shadow #ink[checked] {
+	color: $accentAmber700;
+}
+
+paper-radio-button::shadow #onRadio {
+	background-color: $accentAmber700;
+}
+
+paper-button[raisedButton] {
+	color: #FFF;
+	background: $accentAmber400;
+	transition: background-color 150ms;
+}
+
+paper-button[raisedButton]:hover {
+	background: lighten($accentAmber400, 10%);
+}
+
+paper-button[raisedButton]::shadow #ripple {
+	color: $accentAmber700;
+}
+
+.toolbar {
+	z-index: 2;
+	position: relative;
+	box-shadow: 0 2px 6px 0 rgba(#000, 0.25);
+	margin: 0;
+	h1 {
+		color: #FFF;
+		padding: 10px 20px;
+		margin: 0;
+	}
+	.toolbarControls {
+		float: right;
+		margin: 4px;
+		.button {
+			cursor: pointer;
+			float: left;
+			width: 40px;
+			height: 40px;
+			margin-left: 4px;
+			color: #FFF;
+			font: 0/0 a;
+			transition: color 150ms;
+			core-icon svg {
+				-webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+				-webkit-transform-origin: 50% 50%;
+			}
+			&:hover {
+				color: $accentAmber700;
+				core-icon svg {
+					-webkit-transform: scale(1.2);
+				}
+			}
+		}
+		paper-menu-button.button {
+			paper-item {
+				font: 1.4rem/1.2 $roboto;
+				color: rgba(#000, 0.9);
+				paper-ripple {
+					color: #000;
+				}
+				core-icon svg {
+					-webkit-transform: scale(0.9);
+				}
+				&:hover {
+					color: rgba(#000, 0.9);
+				}
+			}
+			&:hover {
+				paper-item core-icon svg {
+					-webkit-transform: scale(0.9);
+				}
+			}
+		}
+	}
+}
+
+.contentArea {
+	padding: 0;
+}
+
+//modals/popups
+
+.blackout, .confirmBlackout {
+	z-index: 10;
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	background: rgba(#000, 0.65);
+	-webkit-transition: all 400ms;
+	&.active {
+		display: block;
+	}
+}
+.dialog {
+	z-index: 11;
+	position: absolute;
+	left: 50%;
+	top: 10%;
+	display: none;
+	width: 350px;
+	max-height: 520px;
+	padding: 15px;
+	margin-left: -175px;
+	background: #FFFFFF;
+	box-shadow: 0 8px 17px 0 rgba(#000, 0.2);
+	-webkit-transition: all 400ms;
+	@include verticalScrollbar;
+	@include afterClearfix;
+	&.active {
+		display: block;
+	}
+	.doneButton {
+		clear: both;
+		float: right;
+	}
+}
+
+//member list
+
+ul.memberList {
+	position: relative;
+	padding: 10px 0;
+	margin: 0;
+	li {
+		list-style: none;
+		display: block;
+	}
+	.memberCard {
+		position: relative;
+		width: 215px;
+		min-height: 30px;
+		padding: 5px 5px 5px 45px;
+		margin: 7px 15px 7px 20px;
+		text-align: left;
+		background: rgba(#000, 0.4);
+		box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba(#000, 0.4);
+		border-radius: 4px;
+		.memberIcon {
+			position: absolute;
+			left: 11px;
+			top: 3px;
+			opacity: 0.9;
+			-webkit-filter: drop-shadow(rgba(#000, 0.3) -1px -1px 3px) drop-shadow(rgba(#FFF, 0.3) 1px 1px 5px);
+		}
+		&.largeIcon {
+			.memberIcon {
+				left: 3px;
+				top: 5px;
+				width: 40px; //56px - (8*2)
+				height: 40px; //56px - (8*2)
+				svg {
+					width: 40px; //56px - (8*2)
+					height: 40px; //56px - (8*2)
+				}
+			}
+		}
+		.memberName {
+			pointer-events: none;
+			overflow: hidden;
+			margin: 0;
+			color: rgba(#FFFFFF, 0.97);
+			font-size: 1.4rem;
+			font-weight: bold;
+			letter-spacing: 1px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			text-shadow: 1px 1px 5px rgba(#000, 0.5);
+		}
+		.memberRole {
+			pointer-events: none;
+			overflow: hidden;
+			margin: 0 0 2px;
+			color: rgba(#FFFFFF, 0.97);
+			font-size: 1.4rem;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+		}
+		&.red {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($red300, 0.5);
+			.memberIcon {
+				color: $red500;
+				-webkit-filter: drop-shadow(0 0 1px #DDDDDD) drop-shadow(0 0 4px $red300);
+			}
+		}
+		&.pink {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($pink300, 0.5);
+			.memberIcon {
+				color: $pink500;
+				-webkit-filter: drop-shadow(0 0 1px #D0D0D0) drop-shadow(0 0 4px $pink300);
+			}
+		}
+		&.purple {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($purple200, 0.8);
+			.memberIcon {
+				color: $purple400;
+				-webkit-filter: drop-shadow(0 0 1px #B9B9B9) drop-shadow(0 0 4px $purple200);
+			}
+		}
+		&.blue {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($blue400, 0.5);
+			.memberIcon {
+				color: $blue600;
+				-webkit-filter: drop-shadow(0 0 1px #DDDDDD) drop-shadow(0 0 4px $blue400);
+			}
+		}
+		&.cyan {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($cyan400, 0.4);
+			.memberIcon {
+				color: $cyan600;
+				-webkit-filter: drop-shadow(0 0 1px #E9E9E9) drop-shadow(0 0 4px $cyan400);
+			}
+		}
+		&.green {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($green100, 0.9);
+			.memberIcon {
+				color: $green300;
+				-webkit-filter: drop-shadow(0 0 1px #575757) drop-shadow(0 0 4px $green100);
+			}
+		}
+		&.lightGreen {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($lightGreen300, 0.8);
+			.memberIcon {
+				color: $lightGreen500;
+				-webkit-filter: drop-shadow(0 0 1px #666666) drop-shadow(0 0 4px $lightGreen300);
+			}
+		}
+		&.yellow {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($yellow400, 0.7);
+			.memberIcon {
+				color: $yellow600;
+				-webkit-filter: drop-shadow(0 0 1px #575757) drop-shadow(0 0 4px $yellow400);
+			}
+		}
+		&.orange {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($orange300, 0.5);
+			.memberIcon {
+				color: $orange500;
+				-webkit-filter: drop-shadow(0 0 1px #444444) drop-shadow(0 0 4px $orange300);
+			}
+		}
+		&.deepOrange {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($deepOrange300, 0.5);
+			.memberIcon {
+				color: $deepOrange500;
+				-webkit-filter: drop-shadow(0 0 1px #E0E0E0) drop-shadow(0 0 4px $deepOrange300);
+			}
+		}
+		&.brown {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($brown300, 0.7);
+			.memberIcon {
+				color: $brown500;
+				-webkit-filter: drop-shadow(0 0 1px #FFFFFF) drop-shadow(0 0 4px $brown300);
+			}
+		}
+		&.blueGrey {
+			box-shadow: inset 0 0 7px 5px rgba(#000, 0.4), 0 1px 6px 3px rgba($blueGrey400, 0.6);
+			.memberIcon {
+				color: $blueGrey200;
+				-webkit-filter: drop-shadow(0 0 1px #333333) drop-shadow(0 0 4px $blueGrey100);
+			}
+		}
+	}
+}

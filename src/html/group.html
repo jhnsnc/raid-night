@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>Manage Group</title>
+    <!-- scripts -->
+    <script type="text/javascript" src="../js/lib/platform.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../js/global.js"></script>
+    <script type="text/javascript" src="../js/group.js"></script>
+    <!-- polymer components -->
+    <link rel="import" href="../components/core-style/core-style.html">
+    <link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/paper-button/paper-button.html">
+    <link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../components/paper-item/paper-item.html">
+    <link rel="import" href="../components/paper-menu-button/paper-menu-button.html">
+    <link rel="import" href="../components/paper-input/paper-input.html">
+    <!-- project components -->
+    <link rel="import" href="raid-night-icons.html">
+    <!-- styles -->
+    <link rel="stylesheet" href="../css/general.css" shim-shadowdom />
+    <link rel="stylesheet" href="../css/fonts.css" no-shim />
+    <link rel="stylesheet" href="../css/group.css" shim-shadowdom />
+</head>
+<body unresolved>
+    <div class="windowWrapper">
+        <div class="toolbar">
+            <div class="toolbarControls">
+                <paper-icon-button class="button btnAddMember" icon="member-add" label="Add Member"></paper-icon-button>
+                <paper-menu-button class="button btnTeamspeak" icon="teamspeak" label="Teamspeak" halign="right" valign="top">
+                    <paper-item class-"option btnTeamspeakSync" icon="sync" onclick="teamspeakSync()">Sync Members</paper-item>
+                    <paper-item class-"option btnTeamspeakPopulate" icon="populate" onclick="teamspeakPopulate()">Add from TS</paper-item>
+                </paper-menu-button>
+                <paper-icon-button class="button btnCloseWindow" icon="close" label="Close"></paper-icon-button>
+            </div>
+            <h1 class="windowDragGrip">Manage Group</h1>
+        </div>
+        <div class="contentArea">
+            <ul class="memberList">
+                <template id="memberListTemplate" is="auto-binding" repeat="{{ members }}">
+                    <li class="{{ {active: isActive} | tokenList }}">
+                        <div class="memberActions">
+                            <paper-icon-button class="button btnEditMember" icon="edit" label="Edit Member"></paper-icon-button>
+                            <paper-icon-button class="button btnRemoveMember" icon="delete" label="Remove Member"></paper-icon-button>
+                            <paper-icon-button class="button btnRearrangeMember" icon="rearrange-vertical" label="Rearrange"></paper-icon-button>
+                        </div>
+                        <template bind id="memberCardTemplate">
+                            <div id="member-{{id}}" class="memberCard {{colorClass}} {{ {hasTeamspeak: tsId, largeIcon: role} | tokenList }}">
+                                <core-icon class="memberIcon" icon="player-icon-{{icon}}"></core-icon>
+                                <h4 class="memberName">{{name}}</h4>
+                                <template if="{{ role }}">
+                                    <p class="memberRole">{{role}}</p>
+                                </template>
+                                <template if="{{ tsId }}">
+                                    <core-icon class="teamspeakIcon" icon="teamspeak"></core-icon>
+                                </template>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+            <template id="tsConnectionStatusTemplate" is="auto-binding" bind>
+                <div class="teamspeakStatus {{ data.status }}">
+                    <paper-icon-button class="button btnRefreshConnection" icon="refresh" label="Refresh" onclick="teamspeakConnect()"></paper-icon-button>
+                    <h3>TeamSpeak Status: <span class="statusText">{{ data.status }}</span></h3>
+                </div>
+            </template>
+        </div>
+        <div class="blackout"></div>
+        <div class="dialog editMemberDialog">
+            <h2 class="title">Edit Member</h2>
+            <h3>Name</h3>
+            <paper-input class="txtName" label="Type member name here"></paper-input>
+            <p class="tsName">TeamSpeak name: <span></span></p>
+            <h3>Role</h3>
+            <paper-input class="txtRole" label="(optional) Type member role here"></paper-input>
+            <paper-button class="btnPickIcon iconPickerButton" label="Change icon" icon="player-icon-default"></paper-button>
+            <div class="pickerBlackout"></div>
+            <div class="picker iconPicker">
+                <paper-icon-button class="iconOption default" icon="player-icon-default" label="default" data-icon="default"></paper-icon-button>
+                <paper-icon-button class="iconOption flag" icon="player-icon-flag" label="flag" data-icon="flag"></paper-icon-button>
+                <paper-icon-button class="iconOption star" icon="player-icon-star" label="star" data-icon="star"></paper-icon-button>
+                <paper-icon-button class="iconOption heart" icon="player-icon-heart" label="heart" data-icon="heart"></paper-icon-button>
+                <paper-icon-button class="iconOption cloud" icon="player-icon-cloud" label="cloud" data-icon="cloud"></paper-icon-button>
+                
+                <paper-icon-button class="iconOption shield" icon="player-icon-shield" label="shield" data-icon="shield"></paper-icon-button>
+                <paper-icon-button class="iconOption blade" icon="player-icon-blade" label="blade" data-icon="blade"></paper-icon-button>
+                <paper-icon-button class="iconOption bow" icon="player-icon-bow" label="bow" data-icon="bow"></paper-icon-button>
+                <paper-icon-button class="iconOption daggers" icon="player-icon-daggers" label="daggers" data-icon="daggers"></paper-icon-button>
+                <paper-icon-button class="iconOption fangs" icon="player-icon-fangs" label="fangs" data-icon="fangs"></paper-icon-button>
+                
+                <paper-icon-button class="iconOption wand" icon="player-icon-wand" label="wand" data-icon="wand"></paper-icon-button>
+                <paper-icon-button class="iconOption bomb" icon="player-icon-bomb" label="bomb" data-icon="bomb"></paper-icon-button>
+                <paper-icon-button class="iconOption lightning" icon="player-icon-lightning" label="lightning" data-icon="lightning"></paper-icon-button>
+                <paper-icon-button class="iconOption sun" icon="player-icon-sun" label="sun" data-icon="sun"></paper-icon-button>
+                <paper-icon-button class="iconOption leaf" icon="player-icon-leaf" label="leaf" data-icon="leaf"></paper-icon-button>
+
+                <paper-icon-button class="iconOption earth" icon="player-icon-earth" label="earth" data-icon="earth"></paper-icon-button>
+                <paper-icon-button class="iconOption fire" icon="player-icon-fire" label="fire" data-icon="fire"></paper-icon-button>
+                <paper-icon-button class="iconOption ice" icon="player-icon-ice" label="ice" data-icon="ice"></paper-icon-button>
+            </div>
+            <h3>Color</h3>
+            <paper-button class="btnPickColor colorPickerButton" label="Change color" icon="palette"></paper-button>
+            <div class="picker colorPicker">
+                <paper-item class="colorOption red" icon="square" label="red" data-color="red"></paper-item>
+                <paper-item class="colorOption pink" icon="square" label="pink" data-color="pink"></paper-item>
+                <paper-item class="colorOption purple" icon="square" label="purple" data-color="purple"></paper-item>
+                <paper-item class="colorOption blue" icon="square" label="blue" data-color="blue"></paper-item>
+                <paper-item class="colorOption cyan" icon="square" label="cyan" data-color="cyan"></paper-item>
+                <paper-item class="colorOption green" icon="square" label="green" data-color="green"></paper-item>
+                <paper-item class="colorOption lightGreen" icon="square" label="light green" data-color="lightGreen"></paper-item>
+                <paper-item class="colorOption yellow" icon="square" label="yellow" data-color="yellow"></paper-item>
+                <paper-item class="colorOption orange" icon="square" label="orange" data-color="orange"></paper-item>
+                <paper-item class="colorOption deepOrange" icon="square" label="deep orange" data-color="deepOrange"></paper-item>
+                <paper-item class="colorOption brown" icon="square" label="brown" data-color="brown"></paper-item>
+                <paper-item class="colorOption blueGrey" icon="square" label="blue grey" data-color="blueGrey"></paper-item>
+            </div>
+            <br/>
+            <paper-button class="button btnDone" icon="check" label="Done" raisedButton></paper-button>
+        </div>
+    </div>
+</body>
+</html>

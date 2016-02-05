@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>RaidNight Settings</title>
+    <!-- scripts -->
+    <script type="text/javascript" src="../js/lib/platform.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../js/global.js"></script>
+    <script type="text/javascript" src="../js/settings.js"></script>
+    <!-- polymer components -->
+    <link rel="import" href="../components/core-style/core-style.html">
+    <link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/paper-button/paper-button.html">
+    <link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../components/paper-item/paper-item.html">
+    <link rel="import" href="../components/paper-input/paper-input.html">
+    <link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
+    <link rel="import" href="../components/paper-radio-group/paper-radio-group.html">
+    <!-- project components -->
+    <link rel="import" href="raid-night-icons.html">
+    <!-- styles -->
+    <link rel="stylesheet" href="../css/general.css" shim-shadowdom />
+    <link rel="stylesheet" href="../css/fonts.css" no-shim />
+    <link rel="stylesheet" href="../css/settings.css" shim-shadowdom />
+</head>
+<body unresolved>
+    <div class="windowWrapper">
+        <div class="toolbar">
+            <div class="toolbarControls">
+                <paper-icon-button class="button btnCloseWindow" icon="close" label="Close"></paper-icon-button>
+            </div>
+            <h1 class="windowDragGrip">RaidNight Settings</h1>
+        </div>
+        <div class="contentArea">
+            <!-- <paper-radio-group id="selectOverlayAlignment">
+                <paper-radio-button label="Left" name="left"></paper-radio-button><br/>
+                <paper-radio-button label="Right" name="right"></paper-radio-button>
+            </paper-radio-group> -->
+            
+            <section class="settings teamspeakSettings">
+                <h2>TeamSpeak Settings</h2>
+
+                <paper-checkbox id="toggleTsAutoConnect"></paper-checkbox>
+                <div class="description">
+                    <h3>Auto-connect</h3>
+                    <p class="details">Connect to TeamSpeak when RaidNight opens</p>
+                </div>
+
+                <paper-checkbox id="toggleTsAutoSync"></paper-checkbox>
+                <div class="description">
+                    <h3>Auto-sync</h3>
+                    <p class="details">Automatically add/remove members when connected to TeamSpeak</p>
+                </div>
+            </section>
+            
+            <section class="settings teamspeakSettings">
+                <h2>Raid Script Settings</h2>
+
+                <paper-checkbox id="toggleUseClipboard"></paper-checkbox>
+                <div class="description">
+                    <h3>Direct Clipboard Copy</h3>
+                    <p class="details">Single-click copy from the Raid Script panel. Disable if not working for you.</p>
+                </div>
+            </section>
+
+            <section class="settings resetButtons">
+                <h2>Reset Data</h2>
+                <p class="warning">Be careful when resetting data!</p>
+                <p>It is highly recommended that you close and re-open RaidNight after resetting data.</p>
+
+                <div class="resetGroup">
+                    <h3>Clear Member Data</h3>
+                    <p class="details">This will erase ALL members data, including hidden members</p>
+                    <paper-button id="btnResetMembersData" class="button warning" icon="delete" label="Clear Members" raisedButton></paper-button>
+                </div>
+
+                <div class="resetGroup">
+                    <h3>Complete Reset</h3>
+                    <p class="details">Erase ALL members data. Everything. Are you really, really sure?</p>
+                    <paper-button id="btnResetAll" class="button warning" icon="delete" label="Full Reset" raisedButton></paper-button>
+                </div>
+            </section>
+
+            <section class="credits">
+                <h2>Credits</h2>
+                
+                <h3>RaidNight <span class="detail">(code&nbsp;and&nbsp;design)</span></h3>
+                <p class="author">Chris Johnson</p>
+                <p class="contact emailContact"><a href="mailto:jhnsn.c@gmail.com" target="_blank">jhnsn.c@gmail.com</a></p>
+                <p class="contact overwolfContact"><a href="http://forums.overwolf.com/index.php?/user/2285-docjekyll/" target="_blank">Docjekyll</a></p>
+                <p class="contact twitterContact"><a href="https://twitter.com/jhnsnc" target="_blank">@jhnsnc</a></p>
+                
+                <h3>NPAPI Clipboard plugin</h3>
+                <p class="author">meh</p>
+                <p class="contact websiteContact"><a href="https://github.com/meh/npapi-clipboard" target="_blank">Plugin on Github</a></p>
+                <p class="contact overwolfContact"><a href="http://forums.overwolf.com/index.php?/user/6579-meh/" target="_blank">meh</a></p>
+
+                <h3>Polymer&nbsp;Elements <span class="detail">(with&nbsp;modifications)</span></h3>
+                <p class="contact websiteContact"><a href="http://www.polymer-project.org/" target="_blank">http://www.polymer-project.org/</a></p>
+                
+                <h3>jQuery</h3>
+                <p class="contact websiteContact"><a href="http://jquery.com/" target="_blank">http://jquery.com/</a></p>
+                
+                <h3>Google&nbsp;Material&nbsp;Design <span class="detail">(design&nbsp;style&nbsp;inspiration)</span></h3>
+                <p class="contact websiteContact"><a href="http://www.google.com/design/spec/material-design/" target="_blank">http://www.google.com/design/spec/material-design/</a></p>
+            </section>
+        </div>
+        <div class="confirmBlackout"></div>
+        <div class="dialog confirmDialog">
+            <h2 class="title">Confirm Reset</h2>
+            <p class="message">Are you sure? This action cannot be reversed.</p>
+            <paper-button class="btnCancel" label="Cancel"></paper-button>
+            <paper-button class="btnConfirm" raisedButton label="Reset"></paper-button>
+        </div>
+    </div>
+</body>
+</html>
